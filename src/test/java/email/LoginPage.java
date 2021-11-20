@@ -32,16 +32,18 @@ private static final String URL_CAIXA_DE_ENTRADA = "https://outlook.live.com/mai
 	public void preencheFormularioDeLogin(String email, String senha) throws InterruptedException {
 		
 		this.browser.findElement(By.name("loginfmt")).sendKeys(email);
-		   
 		this.browser.findElement(By.id("idSIButton9")).click();
 	    this.browser.findElement(By.name("passwd")).sendKeys(senha);
 //	 exemplo de xpath com valor do campo    entrar = this.browser.findElement(By.xpath("//input[@value='Entrar']"));
 	   
-	   Thread.sleep(1000); 
-	    this.browser.findElement(By.id("idSIButton9")).click();
-//       elementoIdIsVisible("idSIButton9");
-
-	    elementoIdIsVisible("idBtn_Back");
+//	    this.browser.findElement(By.id("idSIButton9")).click();
+	    System.out.println(this.browser.findElement(By.id("idSIButton9")).isDisplayed());
+	    elementoIdIsVisible("idSIButton9");
+       this.browser.findElement(By.id("idSIButton9")).click();
+       System.out.println(this.browser.findElement(By.id("idBtn_Back")).isDisplayed());
+       elementoIdIsVisible("idBtn_Back");
+	   this.browser.findElement(By.id("idBtn_Back")).click();
+	   
 	    
 	}
 
@@ -50,22 +52,24 @@ private static final String URL_CAIXA_DE_ENTRADA = "https://outlook.live.com/mai
 		return this.browser.getCurrentUrl().equals("https://outlook.live.com/mail/0/inbox");
 	}
 	
-	public boolean elementoIdIsVisible(String id) {
-		int time = 1000 /* tempo em milisegundos*/ ;
-		int maxTime = 7000 /* esperar ate 7 segundos*/ ;
-		
+	public boolean elementoIdIsVisible(String id) throws InterruptedException {
+
+		int maxIntervalos = 3 /* se não achar o elemento, aguardar até 2,5 segundos */ ;
+		int intervalo = this.browser.findElement(By.id(id)).isDisplayed() ? maxIntervalos
+				: 0;
+		if(intervalo != maxIntervalos) {
+			Thread.sleep(1000); /* tempo em milisegundos*/
+		}
+
 		try {
-			while(
-					this.browser.findElement(By.id(id)).isDisplayed() && time < maxTime
-					) {
-				Thread.sleep(time);
-				time += time; 
+			while (this.browser.findElement(By.id(id)).isDisplayed() && intervalo < maxIntervalos) {
+				intervalo++;
+				Thread.sleep(500);
 			}
-			this.browser.findElement(By.id(id)).click();
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
-		
+
 	}
 }
