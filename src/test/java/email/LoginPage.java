@@ -31,27 +31,18 @@ private static final String URL_CAIXA_DE_ENTRADA = "https://outlook.live.com/mai
 
 	public void preencheFormularioDeLogin(String email, String senha) throws InterruptedException {
 		
-//	--- este timeout ainda não funcionou	this.browser.manage().timeouts().pageLoadTimeout(15, TimeUnit.SECONDS);
 		this.browser.findElement(By.name("loginfmt")).sendKeys(email);
 		   
 		this.browser.findElement(By.id("idSIButton9")).click();
 	    this.browser.findElement(By.name("passwd")).sendKeys(senha);
-//	    entrar = this.browser.findElement(By.xpath("//input[@value='Entrar']"));
+//	 exemplo de xpath com valor do campo    entrar = this.browser.findElement(By.xpath("//input[@value='Entrar']"));
 	   
-//	    WebElement teste = new WebDriverWait(browser, 200).until(ExpectedConditions.elementToBeClickable(By.id("idSIButton9")));
-//	    teste.click();
-	    
-	    
-	    
-	    Thread.sleep(5000);
-	    
-	    
-	    
-	    
-	    
+	   Thread.sleep(1000); 
 	    this.browser.findElement(By.id("idSIButton9")).click();
-	    this.browser.findElement(By.id("idBtn_Back")).click();
+//       elementoIdIsVisible("idSIButton9");
 
+	    elementoIdIsVisible("idBtn_Back");
+	    
 	}
 
 
@@ -59,5 +50,22 @@ private static final String URL_CAIXA_DE_ENTRADA = "https://outlook.live.com/mai
 		return this.browser.getCurrentUrl().equals("https://outlook.live.com/mail/0/inbox");
 	}
 	
-	
+	public boolean elementoIdIsVisible(String id) {
+		int time = 1000 /* tempo em milisegundos*/ ;
+		int maxTime = 7000 /* esperar ate 7 segundos*/ ;
+		
+		try {
+			while(
+					this.browser.findElement(By.id(id)).isDisplayed() && time < maxTime
+					) {
+				Thread.sleep(time);
+				time += time; 
+			}
+			this.browser.findElement(By.id(id)).click();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+		
+	}
 }

@@ -27,7 +27,7 @@ public class LoginTest {
 	
 	@Test
 	public void deveriaEfetuarLoginComDadosValidos() throws InterruptedException {
-	
+	    
 		paginaDeLogin.preencheFormularioDeLogin("selenium_testes@outlook.com", "123mudar");
 		Assertions.assertTrue(paginaDeLogin.seLogou());
 		
